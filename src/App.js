@@ -17,7 +17,6 @@ function App() {
         <Route path="/recipes/:id" element={<Recipes />} />
         <Route path="/create" element={<Create />} />
       </Routes>
-      <h1>Mega Recipe App</h1>
     </div>
   );
 }
