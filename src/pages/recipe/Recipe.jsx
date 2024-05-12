@@ -16,11 +16,13 @@ const Recipe = () => {
         <div>
           <h2>{recipe.title}</h2>
           <p>{recipe.cookingTime}</p>
-          <ul>
-            {recipe.ingredients.map((ingredient, recipe) => (
-              <li key={recipe}>{ingredient}</li>
-            ))}
-          </ul>
+          {recipe && recipe.ingredients && (
+            <ul>
+              {recipe.ingredients.map((ingredient, index) => (
+                <li key={index}>{ingredient}</li>
+              ))}
+            </ul>
+          )}
           <p className="method">{recipe.method}</p>
         </div>
       )}

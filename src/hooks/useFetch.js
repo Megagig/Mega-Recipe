@@ -1,47 +1,64 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const useFetch = (url) => {
+const useFetch = (url, method = 'GET') => {
   const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
+  const [options, setOptions] = useState(null);
+
+  const postData = (postData) => {
+    setOptions({
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData),
+    });
+  };
 
   useEffect(() => {
     const controller = new AbortController();
-    const fetchData = async () => {
-      setIsLoading(true);
+
+    const fetchData = async (fetchOptions) => {
+      setIsPending(true);
+
       try {
-        const response = await fetch(url, {
+        const res = await fetch(url, {
+          ...fetchOptions,
           signal: controller.signal,
         });
-
-        if (!response.ok) {
-          throw new Error(response.statusText);
+        if (!res.ok) {
+          throw new Error(res.statusText);
         }
-        const data = await response.json();
+        const data = await res.json();
 
-        setIsLoading(false);
+        setIsPending(false);
         setData(data);
         setError(null);
-      } catch (error) {
-        if (error.name === 'AbortError') {
-          console.log('Fetch aborted');
+      } catch (err) {
+        if (err.name === 'AbortError') {
+          console.log('the fetch was aborted');
         } else {
-          setIsLoading(false);
-          setError(
-            'An error occurred while fetching data:Could not fetch data'
-          );
+          setIsPending(false);
+          setError('Could not fetch the data');
         }
       }
     };
 
-    fetchData();
+    // invoke the function
+    if (method === 'GET') {
+      fetchData();
+    }
+    if (method === 'POST' && options) {
+      fetchData(options);
+    }
 
     return () => {
       controller.abort();
     };
-  }, [url]);
+  }, [url, method, options]);
 
-  return { data, isLoading, error };
+  return { data, isPending, error, postData };
 };
 
 export default useFetch;

@@ -36,6 +36,30 @@
       ],
       "method": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse minima ex rem quis similique eum ratione quaerat, voluptas molestias ut repudiandae delectus voluptates. Eius esse at tenetur ab accusamus excepturi?",
       "cookingTime": "35 minutes"
+    },
+    {
+      "id": "3d52",
+      "title": "Cooking Amara",
+      "ingredients": [
+        "maggi",
+        "onion",
+        "Ose",
+        "ugu"
+      ],
+      "method": "cook amara very weel and bring it down",
+      "cookingTime": "34 minutes"
+    },
+    {
+      "id": "b984",
+      "title": "Jellof Rice",
+      "ingredients": [
+        "onion",
+        "maggi",
+        "tomato",
+        "ugu"
+      ],
+      "method": "Use browser developer tools or debugging tools in your development environment to inspect variables and trace the flow of your code. This can help pinpoint the exact source of the error.",
+      "cookingTime": "50 minutes"
     }
   ]
 }

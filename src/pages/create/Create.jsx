@@ -1,7 +1,11 @@
 import { useState, useRef } from 'react';
+import useFetch from '../../hooks/useFetch';
+// import { useNavigate } from 'react-router-dom';
+
+// styles
 import './Create.css';
 
-const Create = () => {
+export default function Create() {
   const [title, setTitle] = useState('');
   const [method, setMethod] = useState('');
   const [cookingTime, setCookingTime] = useState('');
@@ -9,79 +13,93 @@ const Create = () => {
   const [ingredients, setIngredients] = useState([]);
   const ingredientInput = useRef(null);
 
+  const { postData, data } = useFetch('http://localhost:3000/recipes', 'POST');
+  // const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newRecipe = { title, method, cookingTime, ingredients };
-    console.log(newRecipe);
-    setTitle('');
-    setMethod('');
-    setCookingTime(''); // clear the form after submission
+    postData({
+      title,
+      ingredients,
+      method,
+      cookingTime: cookingTime + ' minutes',
+    });
   };
 
   const handleAdd = (e) => {
     e.preventDefault();
-    const ingredient = newIngredient.trim();
-    if (ingredient && !ingredients.includes(ingredient)) {
-      setIngredients((prevIngredients) => [...prevIngredients, ingredient]);
+    const ing = newIngredient.trim();
+
+    if (ing && !ingredients.includes(ing)) {
+      setIngredients((prevIngredients) => [...prevIngredients, newIngredient]);
     }
     setNewIngredient('');
     ingredientInput.current.focus();
   };
+
+  // // redirect the user when we get data response
+  // useEffect(() => {
+  //   if (data) {
+  //     navigate.push('/');
+  //   }
+  // }, [data, navigate]);
+
   return (
     <div className="create">
-      <h2 className="page-title"> Add a New Recipe</h2>
+      <h2 className="page-title">Add a New Recipe</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="title">Recipe Title</label>
-        <input
-          type="text"
-          id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        ></input>
-        {/* Ingredients go here */}
-        <label htmlFor="ingredients">Recipe Ingredients</label>
-        <div className="ingredients">
+        <label>
+          <span>Recipe title:</span>
           <input
             type="text"
-            id="ingredients"
-            placeholder="Ingredients"
-            onChange={(e) => setNewIngredient(e.target.value)}
-            value={newIngredient}
-            ref={ingredientInput}
-          ></input>
-          <button onClick={handleAdd} className="btn">
-            Add
-          </button>
-        </div>
+            onChange={(e) => setTitle(e.target.value)}
+            value={title}
+            required
+          />
+        </label>
+
+        <label>
+          <span>Recipe Ingredients:</span>
+          <div className="ingredients">
+            <input
+              type="text"
+              onChange={(e) => setNewIngredient(e.target.value)}
+              value={newIngredient}
+              ref={ingredientInput}
+            />
+            <button onClick={handleAdd} className="btn">
+              add
+            </button>
+          </div>
+        </label>
         <p>
-          current Ingredients:{' '}
-          {ingredients.map((ingredient, index) => (
-            <em key={index}>{ingredient}, </em>
+          Current ingredients:{' '}
+          {ingredients.map((i) => (
+            <em key={i}>{i}, </em>
           ))}
         </p>
 
-        <label htmlFor="method">Recipe Method</label>
-        <textarea
-          id="method"
-          value={method}
-          onChange={(e) => setMethod(e.target.value)}
-          required
-        ></textarea>
-        <label htmlFor="cookingTime">Cooking Time (in minuites): </label>
-        <input
-          type="number"
-          id="cookingTime"
-          value={cookingTime}
-          onChange={(e) => setCookingTime(e.target.value)}
-          required
-        ></input>
-        <button className="btn" type="submit">
-          Add Recipe
-        </button>
+        <label>
+          <span>Recipe Method:</span>
+          <textarea
+            onChange={(e) => setMethod(e.target.value)}
+            value={method}
+            required
+          />
+        </label>
+
+        <label>
+          <span>Cooking time (minutes):</span>
+          <input
+            type="number"
+            onChange={(e) => setCookingTime(e.target.value)}
+            value={cookingTime}
+            required
+          />
+        </label>
+
+        <button className="btn">submit</button>
       </form>
     </div>
   );
-};
-
-export default Create;
+}
