@@ -2,6 +2,7 @@ import './RecipeList.css';
 import { Link } from 'react-router-dom';
 
 const RecipeList = ({ recipes }) => {
+  if (recipes.length === 0) return <p>No recipes found</p>;
   return (
     <div className="recipes-List">
       {recipes.map((recipe) => (
