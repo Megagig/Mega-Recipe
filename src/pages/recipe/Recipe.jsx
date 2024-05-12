@@ -21,7 +21,7 @@ const Recipe = () => {
               <li key={recipe}>{ingredient}</li>
             ))}
           </ul>
-          <p>{recipe.method}</p>
+          <p className="method">{recipe.method}</p>
         </div>
       )}
     </div>
