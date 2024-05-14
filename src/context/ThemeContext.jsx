@@ -1,10 +1,8 @@
 import { createContext } from 'react';
 
-const ThemeContext = createContext();
+export const ThemeContext = createContext();
 
-export default ThemeContext;
-
-export const ThemeContextProvider = ({ children }) => {
+export const ThemeProvider = ({ children }) => {
   return (
     <ThemeContext.Provider value={{ color: 'blue' }}>
       {children}
